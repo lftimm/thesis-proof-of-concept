@@ -25,6 +25,9 @@ const fragmentShader = document.getElementById("fragmentShader").textContent;
 
 const geometry = new THREE.SphereGeometry(1);
 const material = new THREE.ShaderMaterial({
+    uniforms: {
+        uTime:{value:0}
+    },
     vertexShader,
     fragmentShader
 });
@@ -33,6 +36,7 @@ const cube = new THREE.Mesh(geometry,material);
 scene.add(cube);
 
 // MAIN LOOP
-function animate() {
+function animate(time) {
+    material.uniforms.uTime.value += time*1e-5;
     renderer.render(scene,camera);
 }
