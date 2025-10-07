@@ -23,7 +23,15 @@ document.body.appendChild(renderer.domElement);
 const vertexShader = document.getElementById("vertexShader").textContent;
 const fragmentShader = document.getElementById("fragmentShader").textContent;
 
-const geometry = new THREE.SphereGeometry(1);
+let vertices = new Float32Array( [
+	-2.0, -2.0,  1.0, // v0
+	 2.0, -2.0,  1.0, // v1
+	 0.0,  1,  1.0, // v2
+]);
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
 const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime:{value:0}
