@@ -12,18 +12,37 @@
     <script type="module" src="/main.js"></script>
     <script id="vertexShader" type="x-shader/x-vertex">
       varying vec2 vUv;
+      varying vec3 vPosition;
+      varying vec3 vNormal;
 
       void main() {
           vUv = uv;
+          vPosition = position;
+          vNormal = normal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
 
     </script>
     <script id="fragmentShader" type="x-shader/x-fragment">
       varying vec2 vUv;      
+      varying vec3 vPosition;
+      varying vec3 vNormal;
+
+      const float lightIntensity = 0.75;
+      const float ambientLight = 0.25;
+      const vec3 lightColor = vec3(1.0);
+      const vec3 lightPosition = vec3(0.0,0.0,2.0);
 
       void main() {
-        gl_FragColor = vec4(vec3(2.0*length(vUv - .5)),1.0); 
+
+        vec3 vecToLightSource = lightPosition - vPosition;
+        float distToLight = length(vecToLightSource);
+        float intensityInSurface = lightIntensity * dot(vNormal, normalize(vecToLightSource));
+
+        vec3 color = vec3(1.0,0.0,0.0);
+        vec3 lightInColor = intensityInSurface * color / (1.0+distToLight*distToLight) + ambientLight*lightColor*color;
+
+        gl_FragColor = vec4(lightInColor,1.0); 
       } 
     </script>
   </body>
