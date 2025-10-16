@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls, ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
+import vertexShader from './shaders/vert.vert?raw';
+import fragmentShader from  './shaders/frag.frag?raw';
+
 // CONSTANTS
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -23,14 +26,14 @@ camera.position.x = 10;
 const controls = new OrbitControls(camera,renderer.domElement);
 controls.enableDamping = true;
 
-// SCENE OBJECTS
-const vertexShader = document.getElementById("vertexShader").textContent;
-const fragmentShader = document.getElementById("fragmentShader").textContent;
 
+// SCENE OBJECTS
 const geometry = new THREE.CylinderGeometry(1,1,10,50,50);
 
 const texture = new THREE.TextureLoader().load('resources/concrete.jpg')
 texture.wrapS = THREE.RepeatWrapping;
+
+
 
 const material = new THREE.ShaderMaterial({
     vertexShader: vertexShader,
