@@ -9,11 +9,9 @@ import fragmentShader from  './shaders/frag.frag?raw';
 const width = window.innerWidth;
 const height = window.innerHeight;
 const ratio = width/height;
-const cameraFov = 60;
+const cameraFov = 35;
 const nearPlane = 0.01;
 const farPlane = 1000;
-
-
 
 // SCENE DEFINITIONS
 const scene = new THREE.Scene();
@@ -48,22 +46,26 @@ const material = new THREE.ShaderMaterial({
         uLoad:{value: load}
     }
 });
+
+// GEOMETRY
+const object = new THREE.Mesh(geometry,material);
+object.rotation.x = Math.PI/2;
+scene.add(object);
+
 // GUI
 const gui = new GUI();
 
 const params = {
-    loadKN: 1.0  // Display in kN
+    loadKN: 1000  
 };
 
 gui.add(params, "loadKN", 0, 10000, 1)
    .name("Load (kN)")
    .onChange((value) => {
-       material.uniforms.uLoad.value = value * 1000;  // Convert to N
+       material.uniforms.uLoad.value = value * 1000;  
    });
 
-const object = new THREE.Mesh(geometry,material);
-object.rotation.x = Math.PI/2;
-scene.add(object);
+
 
 // MAIN LOOP
 function animate() {
