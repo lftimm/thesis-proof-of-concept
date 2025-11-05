@@ -4,8 +4,8 @@ varying vec3 vNormal;
 
 uniform float uLength; // m
 uniform float uRadius; // m
+uniform float uLoad; // N
 
-const float P = 1000.0e3; // N
 const float E = 40000.0e6 ; // Pa
 
 mat4 displacement(float dx, float dy, float dz) {
@@ -18,11 +18,11 @@ mat4 displacement(float dx, float dy, float dz) {
 }
 
 float beamDeflection(float x,float I,float L) {
-    return P/(6.0*E*I)*pow(x,2.0)*(3.0*L-x);
+    return uLoad/(6.0*E*I)*pow(x,2.0)*(3.0*L-x);
 }
 
 float beamRotation(float x, float I, float L) {
-    return P/(2.0*E*I) * x * (2.0*L - x);
+    return uLoad/(2.0*E*I) * x * (2.0*L - x);
 }
 
 mat4 rotationX(float angle) {
@@ -37,11 +37,13 @@ mat4 rotationX(float angle) {
 }
 
 void main() {
-    float I = 3.1415*pow(uRadius,4.0)/4.0; // m^4
+    float I = 3.1415*pow(2.0*uRadius,4.0)/64.0; // m^4
     float L = uLength; // m
-    float deflection = beamDeflection(position.y, I, L); // scale for visibility
-    float angle = beamRotation(position.y, I, L);        // scale for visibility   vec4 newPos = displacement(0.0, 0.0, deflection) * rotationX(angle) * vec4(position, 1.0);
-    vec4 newPos = displacement(0.0, 0.0, deflection) * rotationX(angle) * vec4(position, 1.0);
+    float xOffset = L / 2.0;
+    float y = position.y - xOffset;
+    float deflection = beamDeflection(y, I, L);
+    float angle = beamRotation(y, I, L);  
+    vec4 newPos = displacement(0.0, 0.0, deflection) * vec4(position, 1.0);
     vUv = uv;
     vNormal = normal;
     vPosition = vec3(newPos.x,newPos.y,newPos.z);
