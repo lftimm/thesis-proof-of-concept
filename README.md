@@ -5,7 +5,7 @@ Proof of concept for my Bachelors' Thesis. Using vertex shaders, i simulate how 
 I studied the basic of three.js for this, while also understanding better how to utilize shaders, with uniforms and attributes.
 Actually implemented a lighting model for this from scratch, for learning sake.
 
-[![Demo](https://img.youtube.com/vi/Jv3kE5azH/0.jpg)](https://youtu.be/Jv3kE5azH-Y)
+[![Demo](https://img.youtube.com/vi/Jv3kE5azH-Y/0.jpg)](https://youtu.be/Jv3kE5azH-Y)
 
 ## Running
 ```bash
